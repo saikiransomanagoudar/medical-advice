@@ -1,0 +1,52 @@
+version: "2.0"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hello
+      - hi
+      - hey
+      - good morning
+      - good evening
+      - how are you
+      - what's up
+      - hello, how are you?
+
+  - intent: goodbye
+    examples: |
+      - goodbye
+      - see you later
+      - bye
+      - take care
+
+  - intent: medicine
+    examples: |
+      - What medicine should I take for [cold](disease)?
+      - Can you suggest medicine for [headache](disease)?
+      - I have [fever](disease), what should I do?
+      - What should I take for [flu](disease)?
+      - Suggest a medicine for [sore throat](disease).
+      - Can you give me medicine advice for [migraine](disease)?
+
+  - intent: medical_hospital
+    examples: |
+      - Where should I go for a fever?
+      - Which hospital should I visit?
+      - Suggest a hospital for my condition
+
+  - intent: medical_department
+    examples: |
+      - Which department should I visit for throat pain?
+      - What department should I see for chest pain?
+
+  - intent: symptoms
+    examples: |
+      - I have a fever and a headache
+      - I feel dizzy and nauseous
+      - My throat hurts and I have a cough
+
+  - intent: health_advice
+    examples: |
+      - Can you give me advice for managing stress?
+      - What should I do to stay healthy?
+      - How can I manage my fever at home?
