@@ -22,6 +22,18 @@ This chatbot interacts with users to provide AI-powered (GenAI) medical advice f
 - Integrates Rasa for managing user intent and dialogue flow.
 - Calls **OpenAI's GPT-3.5** API for detailed, real-time medical responses.
 
+## Technology Stack
+
+- **Python**: Programming language used for building the chatbot and server-side logic.
+- **Rasa**: Open-source conversational AI platform for managing intents, dialogue flow, and NLU/NLP tasks.
+- **OpenAI GPT-3.5**: GenAI model used for dynamically generating responses related to medical advice.
+- **Autogen**: Dynamic intent routing system for forwarding user queries to the correct specialized agents.
+- **dotenv**: Library for managing environment variables, such as the OpenAI API key.
+- **Rasa SDK**: Provides the action server interface for custom actions and agent logic.
+- **Rasa Shell**: CLI tool to interact with the bot for development and testing.
+- **Pip**: Python package installer for managing dependencies.
+- **Logging (Python)**: Used for logging application activity for debugging and monitoring.
+
 ## Installation
 
 ### Prerequisites
