@@ -14,11 +14,9 @@ load_dotenv()
 
 llm = ChatOpenAI(model="gpt-4o-mini")
 
-# Multi-agent state structure
 class MultiAgentState(BaseModel):
     messages: Annotated[List[BaseMessage], operator.add]
 
-# Helper function to create a response dictionary with one AIMessage
 def create_response(content: str) -> Dict:
     return {"messages": [AIMessage(content=content)]}
 
@@ -87,10 +85,8 @@ class ActionOperatorAgent(Action):
         dispatcher.utter_message(text=f"Operator Agent forwarding request to {next_agent}.")
         return [FollowupAction(name=next_agent)]
 
-# Define the multi-agent graph
 multi_agent_graph = StateGraph(MultiAgentState)
 
-# Add nodes for each agent with the correct references
 multi_agent_graph.add_node("action_greeting_agent", lambda state: ActionGreetingAgent().run(
     CollectingDispatcher(),
     Tracker("default", {}, {}, [], False, None, {}, "default"),
@@ -124,7 +120,6 @@ multi_agent_graph.add_node(
     ) or {"messages": []}
 )
 
-# Define the flow of the conversation
 multi_agent_graph.add_edge(START, "action_operator_agent")
 multi_agent_graph.add_edge("action_operator_agent", "action_greeting_agent")
 multi_agent_graph.add_edge("action_operator_agent", "action_medicine_agent")
