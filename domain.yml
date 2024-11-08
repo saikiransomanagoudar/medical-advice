@@ -37,6 +37,7 @@ actions:
   - action_medicine_agent
   - action_medical_hospital_agent
   - action_medical_department_agent
+  - user_proxy_agent
 
 session_config:
   session_expiration_time: 60

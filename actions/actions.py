@@ -1,13 +1,13 @@
+import operator
+from pydantic import BaseModel
 from rasa_sdk.events import FollowupAction
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
 from dotenv import load_dotenv
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_community.chat_models import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
 from typing import List, Dict, Text, Any, Annotated
-import operator
-from rasa_sdk import Action, Tracker
-from rasa_sdk.executor import CollectingDispatcher
-from pydantic import BaseModel
 
 load_dotenv()
 
@@ -18,6 +18,15 @@ class MultiAgentState(BaseModel):
 
 def create_response(content: str) -> Dict:
     return {"messages": [AIMessage(content=content)]}
+
+class UserProxyAgent(Action):
+    def name(self) -> str:
+        return "user_proxy_agent"
+
+    def run(self, dispatcher, tracker, domain):
+        user_message = tracker.latest_message.get('text', '')
+        dispatcher.utter_message(text=f"UserProxyAgent received: {user_message}")
+        return [FollowupAction(name="action_operator_agent")]
 
 class ActionGreetingAgent(Action):
     def name(self) -> str:
@@ -81,10 +90,18 @@ class ActionOperatorAgent(Action):
             dispatcher.utter_message(text="I'm not sure how to assist with that. Please provide more details.")
             return []
 
-        dispatcher.utter_message(text=f"Operator Agent forwarding request to {next_agent}.")
         return [FollowupAction(name=next_agent)]
 
 multi_agent_graph = StateGraph(MultiAgentState)
+
+multi_agent_graph.add_node(
+    "user_proxy_agent",
+    lambda state: UserProxyAgent().run(
+        CollectingDispatcher(),
+        Tracker("default", {}, {}, [], False, None, {}, "default"),
+        {}
+    ) or {"messages": []}
+)
 
 multi_agent_graph.add_node("action_greeting_agent", lambda state: ActionGreetingAgent().run(
     CollectingDispatcher(),
@@ -119,7 +136,8 @@ multi_agent_graph.add_node(
     ) or {"messages": []}
 )
 
-multi_agent_graph.add_edge(START, "action_operator_agent")
+multi_agent_graph.add_edge(START, "user_proxy_agent")
+multi_agent_graph.add_edge("user_proxy_agent", "action_operator_agent")
 multi_agent_graph.add_edge("action_operator_agent", "action_greeting_agent")
 multi_agent_graph.add_edge("action_operator_agent", "action_medicine_agent")
 multi_agent_graph.add_edge("action_operator_agent", "action_medical_hospital_agent")
@@ -137,7 +155,6 @@ def run_multi_agent_system(input_message: str):
     )
     for step in compiled_graph.stream(initial_state):
         if isinstance(step, dict) and 'messages' in step:
-            # Extract and print a single message
             message = step['messages'][-1] if step['messages'] else None
             if message and hasattr(message, 'content'):
                 print(message.content)

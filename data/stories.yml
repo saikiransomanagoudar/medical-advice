@@ -2,6 +2,12 @@ version: "3.1"
 
 stories:
 
+- story: User input processed by UserProxyAgent
+  steps:
+    - intent: greet
+    - action: user_proxy_agent
+    - action: action_operator_agent
+
 - story: Greet user with response
   steps:
     - intent: greet
