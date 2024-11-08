@@ -1,4 +1,3 @@
-import os
 from rasa_sdk.events import FollowupAction
 from dotenv import load_dotenv
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
