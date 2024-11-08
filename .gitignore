@@ -27,6 +27,8 @@ logs/
 .cache/
 *.swp
 *~
+.rasa
+.rasa/cache
 
 # Rasa specific
 results/

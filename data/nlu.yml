@@ -1,4 +1,4 @@
-version: "2.0"
+version: "3.1"
 
 nlu:
   - intent: greet
@@ -18,6 +18,19 @@ nlu:
       - see you later
       - bye
       - take care
+
+  - intent: ask_medicine
+    examples: |
+      - I am feeling cold
+      - I need some medicine for a cold
+      - I am sick
+      - Can you recommend a medicine?
+  
+  - intent: ask_department
+    examples: |
+      - Where should I go for [fever](symptom) in the hospital?
+      - Which department deals with [respiratory issues](symptom)?
+      - I need to visit the right department for [high fever](symptom).
 
   - intent: medicine
     examples: |

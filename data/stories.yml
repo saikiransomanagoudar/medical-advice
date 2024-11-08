@@ -1,47 +1,43 @@
-version: "2.0"
+version: "3.1"
 
 stories:
 
-- story: Greet user
+- story: Greet user with response
   steps:
     - intent: greet
-    - action: action_greet_user
+    - action: action_greeting_agent
 
 - story: Goodbye to user
   steps:
     - intent: goodbye
     - action: utter_goodbye
 
-- story: User asks for medicine advice
-  steps:
-    - intent: medicine
-    - slot_was_set:
-        - disease: cold
-    - action: action_provide_medicine
-
 - story: User asking for medical department
   steps:
-    - intent: medical_department
-    - action: action_use_autogen
+    - intent: ask_department
+    - action: action_medical_department_agent
+
+- story: User asks about fever and department
+  steps:
+    - intent: ask_department
+    - action: action_medical_department_agent
 
 - story: User asking for medical hospital
   steps:
     - intent: medical_hospital
-    - action: action_use_autogen
+    - action: action_medical_hospital_agent
 
 - story: User asks for advice based on symptoms
   steps:
     - intent: health_advice
-    - action: action_use_autogen
+    - action: action_medicine_agent
 
-- story: User asks for medicine for a specific condition
+- story: User mentions feeling unwell
   steps:
-    - intent: medicine
-    - slot_was_set:
-        - disease: cold
-    - action: action_provide_medicine
+    - intent: ask_medicine
+    - action: action_medicine_agent
 
 - story: Unrecognized query
   steps:
     - intent: nlu_fallback
-    - action: action_use_autogen
+    - action: action_operator_agent

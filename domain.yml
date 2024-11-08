@@ -1,15 +1,20 @@
-version: "2.0"
+version: "3.1"
 
 intents:
   - greet
   - goodbye
+  - ask_medicine
   - medicine
+  - ask_hospital
+  - ask_department
   - medical_hospital
   - medical_department
   - health_advice
+  - symptoms
 
 entities:
   - disease
+  - symptom
 
 slots:
   disease:
@@ -23,14 +28,15 @@ responses:
     - text: "Hello! How can I assist you today?"
   utter_ask_disease:
     - text: "Please provide the name of the condition or disease you are experiencing."
-  
   utter_goodbye:
     - text: "Goodbye! Have a great day!"
-  
+
 actions:
-  - action_greet_user
-  - action_use_autogen
-  - action_provide_medicine
+  - action_operator_agent
+  - action_greeting_agent
+  - action_medicine_agent
+  - action_medical_hospital_agent
+  - action_medical_department_agent
 
 session_config:
   session_expiration_time: 60
